@@ -24,7 +24,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         @Volatile
-        private var instance: AppDatabase? = null
+        var instance: AppDatabase? = null
         private val syncLock = Object()
 
         operator fun invoke(context: Context) = instance ?: buildDatabase(context)

@@ -1,6 +1,8 @@
 package com.rdydev.playground
 
 import android.app.Application
+import com.facebook.stetho.Stetho
+import com.rdydev.playground.di.dataModule
 import com.rdydev.playground.di.networkModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -14,7 +16,11 @@ class BlogApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@BlogApplication)
-            modules(networkModule)
+            modules(networkModule, dataModule)
+        }
+
+        if (BuildConfig.DEBUG) {
+            Stetho.initializeWithDefaults(this)
         }
     }
 }
