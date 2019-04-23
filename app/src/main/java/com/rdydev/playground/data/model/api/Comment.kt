@@ -1,4 +1,4 @@
-package com.rdydev.playground.data.model
+package com.rdydev.playground.data.model.api
 
 data class Comment(
     val postId: Int,

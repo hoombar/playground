@@ -1,4 +1,4 @@
-package com.rdydev.playground.data.model
+package com.rdydev.playground.data.model.api
 
 data class Address(
     val street: String,
