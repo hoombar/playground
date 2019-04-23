@@ -3,6 +3,7 @@ package com.rdydev.playground.data.api
 import com.rdydev.playground.data.model.domain.Comment
 import com.rdydev.playground.data.model.domain.Post
 import com.rdydev.playground.data.model.domain.User
+import io.reactivex.Single
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 
@@ -13,8 +14,8 @@ class BlogApiTest {
 
     @Test
     fun `get users contains correct domain models`() {
-        val apiUser = blogService.getUsers().get(0)
-        val users = sut.getUsers()
+        val apiUser = rxValue(blogService.getUsers()).get(0)
+        val users = rxValue(sut.getUsers())
 
         assertThat(users)
             .hasSize(2)
@@ -30,8 +31,8 @@ class BlogApiTest {
 
     @Test
     fun `get posts contains correct domain models`() {
-        val apiPost = blogService.getPosts().get(0)
-        val posts = sut.getPosts()
+        val apiPost = rxValue(blogService.getPosts()).get(0)
+        val posts = rxValue(sut.getPosts())
 
         assertThat(posts)
             .hasSize(5)
@@ -47,8 +48,8 @@ class BlogApiTest {
 
     @Test
     fun `get comments contains correct domain models`() {
-        val apiComment = blogService.getComments().get(0)
-        val comments = sut.getComments()
+        val apiComment = rxValue(blogService.getComments()).get(0)
+        val comments = rxValue(sut.getComments())
 
         assertThat(comments)
             .hasSize(3)
@@ -62,4 +63,6 @@ class BlogApiTest {
                 )
             )
     }
+
+    private fun <T> rxValue(apiItem: Single<T>): T = apiItem.test().values().get(0)
 }

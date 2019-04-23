@@ -2,6 +2,8 @@
 <manifest package="com.rdydev.playground"
           xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,6 +13,7 @@
         android:theme="@style/AppTheme"
         android:name=".BlogApplication"
         >
+
         <activity android:name=".posts.PostsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

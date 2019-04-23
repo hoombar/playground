@@ -7,10 +7,10 @@ import com.rdydev.playground.data.model.mapper.apiToDomain
 
 class BlogApi(private val blogService: BlogService) {
 
-    fun getUsers() = blogService.getUsers().apiToDomain(UserMapper)
+    fun getUsers() = blogService.getUsers().map { it.apiToDomain(UserMapper) }
 
-    fun getComments() = blogService.getComments().apiToDomain(CommentMapper)
+    fun getComments() = blogService.getComments().map { it.apiToDomain(CommentMapper) }
 
-    fun getPosts() = blogService.getPosts().apiToDomain(PostMapper)
+    fun getPosts() = blogService.getPosts().map { it.apiToDomain(PostMapper) }
 
 }
