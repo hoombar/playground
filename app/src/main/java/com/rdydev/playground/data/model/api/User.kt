@@ -5,10 +5,10 @@ data class Address(
     val suite: String,
     val city: String,
     val zipcode: String,
-    val geo: latLong
+    val geo: LatLong
 )
 
-data class latLong(val lat: String, val lng: String)
+data class LatLong(val lat: String, val lng: String)
 
 data class Company(
     val name: String,
