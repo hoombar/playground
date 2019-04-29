@@ -6,10 +6,14 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.rdydev.playground.data.model.domain.Post
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 @Dao
 interface PostDao {
+
+    @Query("SELECT * FROM post WHERE id = :postId")
+    fun get(postId: Int): Maybe<Post>
 
     @Query("SELECT * FROM post")
     fun getAll(): Single<List<Post>>

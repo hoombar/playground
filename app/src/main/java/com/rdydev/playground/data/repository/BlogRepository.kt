@@ -7,19 +7,10 @@ import com.rdydev.playground.data.dao.UserDao
 import com.rdydev.playground.data.model.domain.Comment
 import com.rdydev.playground.data.model.domain.Post
 import com.rdydev.playground.data.model.domain.User
+import io.reactivex.Maybe
 import io.reactivex.Single
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-
-interface BlogDataProvider {
-
-    fun getUsers(): Single<List<User>>
-
-    fun getComments(): Single<List<Comment>>
-
-    fun getPosts(): Single<List<Post>>
-
-}
 
 class BlogRepository : KoinComponent, BlogDataProvider {
 
@@ -61,5 +52,9 @@ class BlogRepository : KoinComponent, BlogDataProvider {
                         }
                 }
             }
+    }
+
+    fun getPost(postId: Int) : Maybe<Post> {
+        return postDao.get(postId)
     }
 }

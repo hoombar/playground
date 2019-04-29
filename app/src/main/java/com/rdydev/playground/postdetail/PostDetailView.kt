@@ -1,3 +1,7 @@
 package com.rdydev.playground.postdetail
 
-interface PostDetailView
+interface PostDetailView {
+
+    fun render(state: PostDetailScreenState)
+
+}

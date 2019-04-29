@@ -2,4 +2,6 @@
 <resources>
     <dimen name="defaultPadding">16dp</dimen>
     <dimen name="paddingSmall">8dp</dimen>
+
+    <dimen name="textLarge">22sp</dimen>
 </resources>
