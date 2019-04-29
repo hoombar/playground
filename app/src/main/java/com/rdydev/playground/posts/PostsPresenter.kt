@@ -1,6 +1,5 @@
 package com.rdydev.playground.posts
 
-import com.rdydev.playground.data.repository.BlogRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -10,7 +9,7 @@ import org.koin.core.inject
 class PostsPresenter : KoinComponent {
 
     private val compositeDisposable = CompositeDisposable()
-    private val blogRepository: BlogRepository by inject()
+    private val getPostsUseCase: GetPostsUseCase by inject()
 
     private lateinit var view: PostsView
 
@@ -25,7 +24,7 @@ class PostsPresenter : KoinComponent {
         }
     }
 
-    private fun loadPosts() = blogRepository.getPosts()
+    private fun loadPosts() = getPostsUseCase.execute()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .doOnSubscribe { view.render(PostScreenState.LoadingState) }

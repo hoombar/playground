@@ -23,14 +23,25 @@ interface BlogDataProvider {
 
 class BlogRepository : KoinComponent, BlogDataProvider {
 
-    val postDao: PostDao by inject()
-    val commentDao: CommentDao by inject()
-    val userDao: UserDao by inject()
+    private val postDao: PostDao by inject()
+    private val commentDao: CommentDao by inject()
+    private val userDao: UserDao by inject()
 
-    val blogApi: BlogApi by inject()
+    private val blogApi: BlogApi by inject()
 
     override fun getUsers(): Single<List<User>> {
-        return blogApi.getUsers()
+        return userDao.getAll()
+            .flatMap {
+                if (!it.isEmpty()) {
+                    Single.just(it)
+                } else {
+                    blogApi.getUsers()
+                        .map { value ->
+                            userDao.insertAll(*value.toTypedArray()).subscribe()
+                            value
+                        }
+                }
+            }
     }
 
     override fun getComments(): Single<List<Comment>> {
@@ -45,7 +56,7 @@ class BlogRepository : KoinComponent, BlogDataProvider {
                 } else {
                     blogApi.getPosts()
                         .map { value ->
-//                            postDao.insertAll(value).subscribe();
+                            postDao.insertAll(*value.toTypedArray()).subscribe();
                             value
                         }
                 }

@@ -15,6 +15,5 @@ interface PostDao {
     fun getAll(): Single<List<Post>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(posts: List<Post>): Completable
-
+    fun insertAll(vararg posts: Post): Completable
 }
