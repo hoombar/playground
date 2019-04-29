@@ -1,12 +1,14 @@
 package com.rdydev.playground.posts
 
+import com.rdydev.playground.Navigation
+import com.rdydev.playground.data.model.domain.Post
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class PostsPresenter : KoinComponent {
+class PostsPresenter(private val navigation: Navigation) : KoinComponent {
 
     private val compositeDisposable = CompositeDisposable()
     private val getPostsUseCase: GetPostsUseCase by inject()
@@ -22,6 +24,10 @@ class PostsPresenter : KoinComponent {
         if (!compositeDisposable.isDisposed) {
             compositeDisposable.dispose()
         }
+    }
+
+    fun showDetails(post: Post) {
+        navigation.navigateToPostDetail(post.id)
     }
 
     private fun loadPosts() = getPostsUseCase.execute()

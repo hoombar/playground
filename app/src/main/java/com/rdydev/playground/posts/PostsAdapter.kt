@@ -8,13 +8,16 @@ import com.rdydev.playground.R
 import com.rdydev.playground.data.model.domain.Post
 import kotlinx.android.synthetic.main.view_post_list_item.view.*
 
-class PostsAdapter(val data: List<Post>) : RecyclerView.Adapter<PostViewHolder>() {
+class PostsAdapter(
+    private val data: List<Post>,
+    private val presenter: PostsPresenter
+) : RecyclerView.Adapter<PostViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val view = layoutInflater.inflate(R.layout.view_post_list_item, parent, false)
 
-        return PostViewHolder(view)
+        return PostViewHolder(view, presenter)
     }
 
     override fun getItemCount(): Int {
@@ -26,11 +29,12 @@ class PostsAdapter(val data: List<Post>) : RecyclerView.Adapter<PostViewHolder>(
     }
 }
 
-class PostViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+class PostViewHolder(private val view: View, private val presenter: PostsPresenter) : RecyclerView.ViewHolder(view) {
 
     fun bind(item: Post) {
         view.postTitle.text = item.title
         view.bodyPreview.text = item.body
+        view.setOnClickListener { presenter.showDetails(item) }
     }
 
 }

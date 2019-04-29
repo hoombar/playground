@@ -5,13 +5,17 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rdydev.playground.Navigation
 import com.rdydev.playground.R
 import com.rdydev.playground.data.model.domain.Post
 import kotlinx.android.synthetic.main.activity_posts.*
+import java.lang.ref.WeakReference
 
 class PostsActivity : AppCompatActivity(), PostsView {
 
-    private val presenter = PostsPresenter()
+    private val presenter by lazy {
+        PostsPresenter(Navigation(WeakReference(this)))
+    }
 
     private lateinit var adapter: PostsAdapter
 
@@ -54,7 +58,7 @@ class PostsActivity : AppCompatActivity(), PostsView {
         // this is a fairly crude implementation, if it was Flowable, it would
         // be better to use DiffUtil and consider notifyRangeChanged, notifyItemInserted, etc
         // to preserve animations on the RecyclerView
-        adapter = PostsAdapter(posts)
+        adapter = PostsAdapter(posts, presenter)
         listOfPosts.adapter = adapter
         listOfPosts.visibility = View.VISIBLE
     }
