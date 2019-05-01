@@ -8,11 +8,9 @@ import io.reactivex.schedulers.Schedulers
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class PostsPresenter(private val navigation: Navigation) : KoinComponent {
+class PostsPresenter(private val navigation: Navigation, private val getPostsUseCase: GetPostsUseCase) : KoinComponent {
 
     private val compositeDisposable = CompositeDisposable()
-    private val getPostsUseCase: GetPostsUseCase by inject()
-
     private lateinit var view: PostsView
 
     fun bind(view: PostsView) {

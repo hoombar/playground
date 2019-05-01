@@ -1,0 +1,62 @@
+package com.rdydev.playground.posts
+
+import com.rdydev.playground.Navigation
+import com.rdydev.playground.data.model.domain.Post
+import com.rdydev.playground.rules.RxSchedulerRule
+import io.mockk.MockKAnnotations
+import io.mockk.every
+import io.mockk.impl.annotations.MockK
+import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.verifyOrder
+import io.reactivex.Single
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+
+class PostsPresenterTest {
+
+    @get:Rule
+    val rxRule = RxSchedulerRule()
+
+    @MockK
+    lateinit var navigation: Navigation
+    @MockK
+    lateinit var getPostsUseCase: GetPostsUseCase
+    @RelaxedMockK
+    lateinit var view: PostsView
+
+    private val anyPost = Post(1, 1, "title", "body")
+
+    private val sut by lazy {
+        PostsPresenter(navigation, getPostsUseCase)
+    }
+
+    @Before
+    fun setup() = MockKAnnotations.init(this)
+
+    @Test
+    fun `binding loads posts`() {
+        every { getPostsUseCase.execute() } returns Single.just(listOf(anyPost))
+
+        sut.bind(view)
+
+        verifyOrder {
+            view.render(any<PostScreenState.LoadingState>())
+            view.render(any<PostScreenState.DataState>())
+            view.render(any<PostScreenState.FinishState>())
+        }
+    }
+
+    @Test
+    fun `error on binding shows error state after loading`() {
+        every { getPostsUseCase.execute() } returns Single.error(Throwable())
+
+        sut.bind(view)
+
+        verifyOrder {
+            view.render(any<PostScreenState.LoadingState>())
+            view.render(any<PostScreenState.ErrorState>())
+            view.render(any<PostScreenState.FinishState>())
+        }
+    }
+}

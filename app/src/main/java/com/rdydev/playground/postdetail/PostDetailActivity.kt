@@ -3,17 +3,18 @@ package com.rdydev.playground.postdetail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.rdydev.playground.R
 import com.rdydev.playground.data.model.domain.Post
 import kotlinx.android.synthetic.main.activity_post_details.*
+import org.koin.android.ext.android.inject
+import org.koin.core.KoinComponent
 
-class PostDetailActivity : AppCompatActivity(), PostDetailView {
+class PostDetailActivity : AppCompatActivity(), PostDetailView, KoinComponent {
 
-    private val presenter = PostDetailPresenter()
+    private val presenter: PostDetailPresenter by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

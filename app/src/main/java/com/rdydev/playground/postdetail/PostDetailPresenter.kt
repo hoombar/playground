@@ -4,12 +4,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-class PostDetailPresenter : KoinComponent {
+class PostDetailPresenter(private val getPostUseCase: GetPostUseCase) : KoinComponent {
 
     private val disposable = CompositeDisposable()
-    private val getPostUseCase: GetPostUseCase by inject()
 
     private lateinit var view: PostDetailView
 

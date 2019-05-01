@@ -5,17 +5,15 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.rdydev.playground.Navigation
 import com.rdydev.playground.R
 import com.rdydev.playground.data.model.domain.Post
 import kotlinx.android.synthetic.main.activity_posts.*
-import java.lang.ref.WeakReference
+import org.koin.android.ext.android.inject
+import org.koin.core.KoinComponent
 
-class PostsActivity : AppCompatActivity(), PostsView {
+class PostsActivity : AppCompatActivity(), PostsView, KoinComponent {
 
-    private val presenter by lazy {
-        PostsPresenter(Navigation(WeakReference(this)))
-    }
+    private val presenter: PostsPresenter by inject()
 
     private lateinit var adapter: PostsAdapter
 
