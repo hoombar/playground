@@ -26,6 +26,7 @@ class PostDetailPresenter(private val getPostUseCase: GetPostUseCase) : KoinComp
         .doOnSubscribe { view.render(PostDetailScreenState.LoadingState) }
         .doAfterTerminate { view.render(PostDetailScreenState.FinishState) }
         .doOnError { view.render(PostDetailScreenState.ErrorState(it)) }
+        .toSingle()
         .subscribe({
             view.render(PostDetailScreenState.DataState(it))
         }, {
