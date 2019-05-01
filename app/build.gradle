@@ -56,3 +56,17 @@ dependencies {
     testImplementation 'org.assertj:assertj-core:3.12.2'
     testImplementation "io.mockk:mockk:1.9.3"
 }
+
+task deployDebug(type: Exec, dependsOn: 'installDebug') {
+    def rootDir = project.rootDir
+    def localProperties = new File(rootDir, "local.properties")
+    if (localProperties.exists()) {
+        Properties properties = new Properties()
+        localProperties.withInputStream {
+            inputStream -> properties.load(inputStream)
+        }
+        def sdkDir = properties.getProperty('sdk.dir')
+        def adb = "$sdkDir/platform-tools/adb"
+        commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.rdydev.playground/com.rdydev.playground.posts.PostsActivity'
+    }
+}
