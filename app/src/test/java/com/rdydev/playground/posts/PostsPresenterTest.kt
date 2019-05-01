@@ -1,6 +1,5 @@
 package com.rdydev.playground.posts
 
-import com.rdydev.playground.Navigation
 import com.rdydev.playground.data.model.domain.Post
 import com.rdydev.playground.rules.RxSchedulerRule
 import io.mockk.MockKAnnotations
@@ -19,8 +18,6 @@ class PostsPresenterTest {
     val rxRule = RxSchedulerRule()
 
     @MockK
-    lateinit var navigation: Navigation
-    @MockK
     lateinit var getPostsUseCase: GetPostsUseCase
     @RelaxedMockK
     lateinit var view: PostsView
@@ -28,7 +25,7 @@ class PostsPresenterTest {
     private val anyPost = Post(1, 1, "title", "body")
 
     private val sut by lazy {
-        PostsPresenter(navigation, getPostsUseCase)
+        PostsPresenter(getPostsUseCase)
     }
 
     @Before
@@ -41,9 +38,9 @@ class PostsPresenterTest {
         sut.bind(view)
 
         verifyOrder {
-            view.render(any<PostScreenState.LoadingState>())
-            view.render(any<PostScreenState.DataState>())
-            view.render(any<PostScreenState.FinishState>())
+            view.render(any<PostScreenState.Loading>())
+            view.render(any<PostScreenState.DataAvailable>())
+            view.render(any<PostScreenState.FinishedLoading>())
         }
     }
 
@@ -54,9 +51,9 @@ class PostsPresenterTest {
         sut.bind(view)
 
         verifyOrder {
-            view.render(any<PostScreenState.LoadingState>())
-            view.render(any<PostScreenState.ErrorState>())
-            view.render(any<PostScreenState.FinishState>())
+            view.render(any<PostScreenState.Loading>())
+            view.render(any<PostScreenState.Error>())
+            view.render(any<PostScreenState.FinishedLoading>())
         }
     }
 }

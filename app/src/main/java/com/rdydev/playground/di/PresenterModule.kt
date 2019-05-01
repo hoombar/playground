@@ -6,7 +6,7 @@ import org.koin.dsl.module
 
 val presenterModule = module {
 
-    factory { PostsPresenter(get(), get()) }
+    factory { PostsPresenter(get()) }
 
     factory { PostDetailPresenter(get()) }
 

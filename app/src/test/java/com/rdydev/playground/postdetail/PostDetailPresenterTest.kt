@@ -1,7 +1,6 @@
 package com.rdydev.playground.postdetail
 
 import com.rdydev.playground.data.model.domain.Post
-import com.rdydev.playground.posts.PostScreenState
 import com.rdydev.playground.rules.RxSchedulerRule
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -34,14 +33,14 @@ class PostDetailPresenterTest {
     @Test
     fun `binding loads data`() {
         every { getPostUseCase.execute(1) } returns Maybe.just(anyPost)
-        val slot = slot<PostDetailScreenState.DataState>()
+        val slot = slot<PostDetailScreenState.DataAvailable>()
 
         sut.bind(view, 1)
 
         verifyOrder {
-            view.render(any<PostDetailScreenState.LoadingState>())
+            view.render(any<PostDetailScreenState.Loading>())
             view.render(capture(slot))
-            view.render(any<PostDetailScreenState.FinishState>())
+            view.render(any<PostDetailScreenState.FinishedLoading>())
         }
         assertEquals(anyPost, slot.captured.post)
     }
@@ -62,9 +61,9 @@ class PostDetailPresenterTest {
         sut.bind(view, 1)
 
         verifyOrder {
-            view.render(any<PostDetailScreenState.LoadingState>())
-            view.render(any<PostDetailScreenState.ErrorState>())
-            view.render(any<PostDetailScreenState.FinishState>())
+            view.render(any<PostDetailScreenState.Loading>())
+            view.render(any<PostDetailScreenState.Error>())
+            view.render(any<PostDetailScreenState.FinishedLoading>())
         }
     }
 }

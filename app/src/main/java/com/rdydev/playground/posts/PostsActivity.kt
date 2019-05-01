@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.rdydev.playground.Navigation
 import com.rdydev.playground.R
 import com.rdydev.playground.data.model.domain.Post
 import kotlinx.android.synthetic.main.activity_posts.*
@@ -14,12 +15,14 @@ import org.koin.core.KoinComponent
 class PostsActivity : AppCompatActivity(), PostsView, KoinComponent {
 
     private val presenter: PostsPresenter by inject()
+    private lateinit var navigation: Navigation
 
     private lateinit var adapter: PostsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts)
+        navigation = Navigation(this)
 
         listOfPosts.layoutManager = LinearLayoutManager(this)
         val separator = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
@@ -35,10 +38,11 @@ class PostsActivity : AppCompatActivity(), PostsView, KoinComponent {
 
     override fun render(state: PostScreenState) {
         when (state) {
-            is PostScreenState.LoadingState -> showLoading()
-            is PostScreenState.DataState -> showPosts(state.posts)
-            is PostScreenState.ErrorState -> showError(getString(R.string.load_posts_error_message))
-            is PostScreenState.FinishState -> hideLoading()
+            is PostScreenState.Loading -> showLoading()
+            is PostScreenState.DataAvailable -> showPosts(state.posts)
+            is PostScreenState.Error -> showError(getString(R.string.load_posts_error_message))
+            is PostScreenState.FinishedLoading -> hideLoading()
+            is PostScreenState.PostSelected -> navigation.navigateToPostDetail(state.post.id)
         }
     }
 

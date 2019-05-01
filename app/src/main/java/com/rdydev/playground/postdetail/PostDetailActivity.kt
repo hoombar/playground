@@ -22,7 +22,7 @@ class PostDetailActivity : AppCompatActivity(), PostDetailView, KoinComponent {
 
         val postId = intent?.extras?.getInt(ARG_POST_ID)
         if (!(postId != null && postId != 0)) {
-            render(PostDetailScreenState.ErrorState(Throwable("no post Id")))
+            render(PostDetailScreenState.Error(Throwable("no post Id")))
         } else {
             presenter.bind(this, postId)
         }
@@ -35,14 +35,14 @@ class PostDetailActivity : AppCompatActivity(), PostDetailView, KoinComponent {
 
     override fun render(state: PostDetailScreenState) {
         when (state) {
-            is PostDetailScreenState.LoadingState -> showLoading()
-            is PostDetailScreenState.ErrorState -> {
+            is PostDetailScreenState.Loading -> showLoading()
+            is PostDetailScreenState.Error -> {
                 // a fairly crude error, and boot them back to the list. The UX could be nicer here
                 Toast.makeText(this, R.string.display_post_error_message, Toast.LENGTH_SHORT).show()
                 finish()
             }
-            is PostDetailScreenState.DataState -> showPost(state.post)
-            is PostDetailScreenState.FinishState -> hideLoading()
+            is PostDetailScreenState.DataAvailable -> showPost(state.post)
+            is PostDetailScreenState.FinishedLoading -> hideLoading()
         }
     }
 
@@ -68,8 +68,6 @@ class PostDetailActivity : AppCompatActivity(), PostDetailView, KoinComponent {
 
             postTitle.visibility = this
             postBody.visibility = this
-
-            // TODO add comments
         }
 
         loading.visibility = View.VISIBLE

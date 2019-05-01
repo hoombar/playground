@@ -1,14 +1,12 @@
 package com.rdydev.playground.posts
 
-import com.rdydev.playground.Navigation
 import com.rdydev.playground.data.model.domain.Post
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-class PostsPresenter(private val navigation: Navigation, private val getPostsUseCase: GetPostsUseCase) : KoinComponent {
+class PostsPresenter(private val getPostsUseCase: GetPostsUseCase) : KoinComponent {
 
     private val compositeDisposable = CompositeDisposable()
     private lateinit var view: PostsView
@@ -25,16 +23,16 @@ class PostsPresenter(private val navigation: Navigation, private val getPostsUse
     }
 
     fun showDetails(post: Post) {
-        navigation.navigateToPostDetail(post.id)
+        view.render(PostScreenState.PostSelected(post))
     }
 
     private fun loadPosts() = getPostsUseCase.execute()
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnSubscribe { view.render(PostScreenState.LoadingState) }
-        .doAfterTerminate { view.render(PostScreenState.FinishState) }
+        .doOnSubscribe { view.render(PostScreenState.Loading) }
+        .doAfterTerminate { view.render(PostScreenState.FinishedLoading) }
         .subscribe(
-            { view.render(PostScreenState.DataState(it)) },
-            { view.render(PostScreenState.ErrorState(it)) }
+            { view.render(PostScreenState.DataAvailable(it)) },
+            { view.render(PostScreenState.Error(it)) }
         )
 }

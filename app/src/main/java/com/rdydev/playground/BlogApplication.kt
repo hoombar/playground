@@ -15,7 +15,7 @@ class BlogApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@BlogApplication)
-            modules(networkModule, dataModule, useCaseModule, navigationModule, presenterModule)
+            modules(networkModule, dataModule, useCaseModule, presenterModule)
         }
 
         if (BuildConfig.DEBUG) {

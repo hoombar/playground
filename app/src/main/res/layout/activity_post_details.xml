@@ -27,9 +27,10 @@
 
         app:layout_constraintTop_toBottomOf="@id/postTitle"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="@dimen/defaultPadding"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="@dimen/defaultPadding"
 
-        tools:text="A sample post title"
+        tools:text="A sample post title with really long text that should wrap on to the next line"
         />
 
     <ProgressBar

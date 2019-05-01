@@ -23,13 +23,13 @@ class PostDetailPresenter(private val getPostUseCase: GetPostUseCase) : KoinComp
     private fun loadPost(postId: Int) = getPostUseCase.execute(postId)
         .subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
-        .doOnSubscribe { view.render(PostDetailScreenState.LoadingState) }
-        .doAfterTerminate { view.render(PostDetailScreenState.FinishState) }
-        .doOnError { view.render(PostDetailScreenState.ErrorState(it)) }
+        .doOnSubscribe { view.render(PostDetailScreenState.Loading) }
+        .doAfterTerminate { view.render(PostDetailScreenState.FinishedLoading) }
+        .doOnError { view.render(PostDetailScreenState.Error(it)) }
         .toSingle()
         .subscribe({
-            view.render(PostDetailScreenState.DataState(it))
+            view.render(PostDetailScreenState.DataAvailable(it))
         }, {
-            view.render(PostDetailScreenState.ErrorState(it))
+            view.render(PostDetailScreenState.Error(it))
         })
 }
