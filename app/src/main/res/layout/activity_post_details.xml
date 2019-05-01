@@ -9,11 +9,12 @@
 
     <TextView
         android:id="@+id/postTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
 
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="@dimen/defaultPadding"
         style="@style/Title"
 
@@ -22,13 +23,13 @@
 
     <TextView
         android:id="@+id/postBody"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
 
         app:layout_constraintTop_toBottomOf="@id/postTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="@dimen/defaultPadding"
+        android:layout_margin="@dimen/defaultPadding"
 
         tools:text="A sample post title with really long text that should wrap on to the next line"
         />

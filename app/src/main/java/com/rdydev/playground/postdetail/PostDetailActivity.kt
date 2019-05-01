@@ -20,8 +20,8 @@ class PostDetailActivity : AppCompatActivity(), PostDetailView, KoinComponent {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_details)
 
-        val postId = intent?.extras?.getInt(ARG_POST_ID)
-        if (!(postId != null && postId != 0)) {
+        val postId = intent?.extras?.getInt(ARG_POST_ID, -1)
+        if (postId == null || postId == -1) {
             render(PostDetailScreenState.Error(Throwable("no post Id")))
         } else {
             presenter.bind(this, postId)
